@@ -2,7 +2,7 @@
 import os.path
 root = os.path.dirname(__file__).replace('\\','/')
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -94,5 +94,14 @@ INSTALLED_APPS = (
     'tqv',
 )
 
-RSVP_FROM_EMAIL="test@gmail.com"
 PRODUCTION = False
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tqvtamaulipas@gmail.com'
+EMAIL_HOST_PASSWORD = 'tqvtamps11'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_SENDER = 'tqvtamaulipas'
+RSVP_FROM_EMAIL = EMAIL_SENDER
+
