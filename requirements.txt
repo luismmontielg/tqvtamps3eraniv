@@ -2,4 +2,4 @@ Django==1.2.6
 psycopg2==2.4.2
 PIL==1.1.7
 South==0.7.3
--e git+https://github.com/luismmontielg/django-rsvp.git#791fb60a3a07917e9699ab987e545f062e6a46e8#egg=django-rsvp
+-e git+https://github.com/luismmontielg/django-rsvp.git#791fb60a3a07917e9699ab987e545f062e6a46e8#egg=rsvp
