@@ -1,0 +1,16 @@
+#dialog input[type="text"] {
+    width: 300px;
+}
+#dialog ul {
+    list-style-type: none;
+    margin-left: 15px;
+}
+
+#dialog ul li {
+    display: inline-block;
+    list-style-type: none;
+    float: left;
+}
+#reservationForm p:last-child {
+    padding-top: 40px;
+}

@@ -1,0 +1,10 @@
+bin
+database.db
+build
+include
+lib
+.Python
+*.pyc
+.idea
+.idea/*
+.idea/**/*

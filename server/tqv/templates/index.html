@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block links %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/custom.css" />
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+var cleanForm = null;
+$(document).ready(function() {
+    cleanForm = $('#formArea').html();
+
+    $("#dialog").dialog({
+        zIndex: 300,
+        stack: false,
+        width: 600,
+        title: 'Confirmar asistencia',
+        modal: true,
+        resizable: false,
+        autoOpen: false
+    });
+
+    $("#rsvp-now").click(function () {
+        $("#dialog").dialog("open");
+    });
+
+    $("#closeDialog").click(function () {
+        $("#dialog").dialog("close");
+        $('#formArea').html(cleanForm);
+    });
+
+    // prepare Options Object
+    var options = {
+        target:     '#formArea',
+        url:        '{% url handle_rsvp %}',
+        dataType: 'json',
+        success: function(data) {
+            //<success>
+            $('#formArea').html(data.reservationForm);
+
+            if(data.message == '' || !data.success){
+                return;
+            }
+            else
+            {
+                $('#formArea').html(cleanForm);
+            }
+
+            $("#dialog").dialog("close");
+            alert(data.message);
+            $("#count").text(data.count);
+        }
+    };
+    // pass options to ajaxForm
+    $('#reservationForm').ajaxForm(options);
+});
+</script>
+{% endblock %}
+{% block body %}
+
+
+    <div id='dialog'>
+    <form id='reservationForm' method="post">
+    {% csrf_token %}
+    <div id='formArea'>
+    {{form.as_p}}
+    </div>
+    <input type='submit' value='Listo!' />
+    </form>
+    <!--<input id='closeDialog' type='button' value='Cerrar' />-->
+    </div>
+
+    <div id="wrapper">
+
+        <header id="header" class="clearfix" role="banner">
+
+        </header> <!-- #header -->
+
+        <div id="main" class="clearfix">
+
+            <!-- Show a "Please Upgrade" box to both IE7 and IE6 users (Edit to IE 6 if you just want to show it to IE6 users) - jQuery will load the content from js/ie.html into the div -->
+            <!--[if lte IE 7]>
+        <div class="ie warning"></div>
+    <![endif]-->
+
+            <div id="content" role="main">
+
+                <article class="post">
+
+                    <h2 class="entry-title"><a href="#">{{ event.title }}</a></h2>
+
+                    <figure>
+                        <a href="#"><img width="200" height="200" src="{{ event.details.image.url }}" alt="Post thumbnail" class="thumbnail alignleft" /></a>
+                    </figure>
+
+                    <div class="entry-content">
+
+                        {{ event.description|safe }}
+
+                        <br />
+                        <div><h4 style="padding-right: 7px; display: inline-block;">Fecha del evento:</h4> <a>{{ event.date_of_event|date:"l d \de F \de\l Y"  }}</a></div>
+                        <table>
+                            <tr>
+                                <td>Inicio</td>
+                                <td>Actividad</td>
+                                <td>Presentador</td>
+                            </tr>
+                            {% for activity in activities %}
+                            <tr>
+                                <td>{{ activity.start_time|date:"h:i a" }}&nbsp;a&nbsp;{{ activity.end_time|date:"h:i a" }}</td>
+                                <td>{{ activity.name }}</td>
+                                <td>{{ activity.presenter }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+
+                    </div> <!-- .entry-content -->
+
+                    <footer class="post-meta">
+                        <p>
+                            Tenemos ya <a id="count">{{ event.guests_attending.count }}</a>
+                            personas <span><a class="url fn n">confirmadas</a>.</span>
+                            Tu participacion es importante para nosotros
+                        </p>
+                        <a href="#d" id="rsvp-now" class="more-link">Me interesa, deseo unirme</a>
+                    </footer> <!-- .post-meta -->
+
+                </article> <!-- .post 1 -->
+
+                <!--
+                <hr />
+                -->
+
+            </div> <!-- #content -->
+        </div> <!-- #main -->
+
+        <footer id="footer">
+            <p>
+                <span class="sep">*</span>
+                Sitio desarrollado por <a href="https://twitter.com/#!/luismmontielg" title="Desarrollado por Luis Montiel">Luis Montiel</a>
+            </p>
+        </footer> <!-- #footer -->
+
+        <div class="clear"></div>
+
+    </div> <!-- #wrapper -->
+{% endblock %}
